@@ -39,7 +39,7 @@ exports.search = function(json, callback) {
 }
 
 exports.getAllfiles = function(json, callback) {
-	var searchResult = [{
+	var searchResult = {"aaData" : [{
 		"FileName": "File1",
 		"FileType": ".txt",
 		"Tag": "KBM Doc",
@@ -51,7 +51,7 @@ exports.getAllfiles = function(json, callback) {
 		"Tag": "EHR Doc",
 		"Description": "EHR Report description",
 		"DateTime": "10/17-2013 03:18:00:00"
-	}];
+	}]};
 
 	callback && callback(null, searchResult);
 }

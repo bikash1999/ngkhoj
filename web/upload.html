@@ -21,6 +21,9 @@
         <link href="css/metro-responsive.css" rel="stylesheet">
         <link href="css/metro-helper.css" rel="stylesheet">
         <link href="css/font-awesome.css" rel="stylesheet">
+        <link href="css/datatables/DT_bootstrap.css" rel="stylesheet">
+        <link href="css/datatables/colreorder/ColReorder.css" rel="stylesheet">
+        <link href="css/datatables/colvis/ColVis.css" rel="stylesheet">
          <link href="css/app.css" rel="stylesheet">
         
         
@@ -167,36 +170,60 @@
                             </div>
                         </li>                      
                     </ul> <!-- /content action -->
-
-                    <!-- content title-->
                     <div class="page-header">
                         <div class="search-box">
                             <form id="form-search" class="form-vertical">
                                 <div class="control-group">
                                     <div class="controls">
-                                        <div style="display: block;" class="input-append input-append-inline">
-                                            <input type="text" placeholder="Search..." name="inputSearch" class="input-block-level">
-                                            <button type="submit" class="btn bg-cyan">
-                                                <i class="aweso-search"></i>
-                                            </button>
-                                        </div>
+                                        <a href="#uploadModal" role="button" class="btn btn btn-success" data-toggle="modal">Upload</a>
                                     </div>
                                 </div>
                             </form>
                         </div>
                     </div>
+
+
+                    <!-- content title-->
+
                 </header> <!--/ content header -->
                 
                 
                 <!-- content page -->
                 <article class="content-page">
                     <!-- main page, you're application here -->
-                    <div class="main-page">
-                        <div class="content-inner">
+                    <div class="main-page" style="padding:5px 10px;">
 
-                            <p>uploaded files</p>
+                        <div class="widget border-cyan" id="widget-datatables1">
+                            <!-- widget header -->
+                            <div class="widget-header bg-cyan">
+                                <!-- widget icon -->
+                                <div class="widget-icon"><i class="aweso-table"></i></div>
+                                <!-- widget title -->
+                                <h4 class="widget-title">my files</h4>
+                                <!-- widget action, you can also use btn, btn-group, nav-tabs or nav-pills (also support dropdown). enjoy! -->
+                                <div class="widget-action color-cyan">
+                                    <button data-toggle="collapse" data-collapse="#widget-datatables1" class="btn">
+                                        <i class="aweso-minus" data-toggle-icon="aweso-minus aweso-plus"></i>
+                                    </button>
+                                </div>
+                            </div><!-- /widget header -->
 
-                        </div>
+                            <!-- widget content -->
+                            <div class="widget-content">
+                                <table id="datatables1" class="table table-striped table-hover">
+                                    <thead>
+                                    <tr>
+                                        <th>Filename</th>
+                                        <th>type</th>
+                                        <th>Title</th>
+                                        <th>Description</th>
+                                        <th>Date time</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody> </tbody> <!-- source with ajax -->
+                                </table>
+                            </div><!-- /widget content -->
+                        </div> <!-- /widget datatables #1 -->
                     </div>
                 </article> <!-- /content page -->
                 
@@ -209,10 +236,44 @@
         <footer class="footer" style="padding-left:10px;">
             <p>Copyright &copy; 2013. All Right Reserved.</p>
         </footer><!--/ footer -->
-        
-        
-        
-        
+
+        <!-- Modal -->
+        <div id="uploadModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-body uploadarea">
+                <div id="dropzone">
+                    <form action="../api/file/upload"
+                          class="dropzone form-horizontal"
+                          id="my-awesome-dropzone" enctype=multipart/form-data>
+                        <div class="fallback">
+                            <input name="file" type="file"/>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label" for="input-title">Title</label>
+                            <div class="controls">
+                                <input class="input-mini span3" id="input-title" name="title" type="text" placeholder="document title">
+                            </div>
+                            <label class="control-label" for="input-desc">Tag</label>
+                            <div class="controls">
+                                <input class="input-mini span3" id="input-desc" name="tag" type="text" placeholder="tag1, tag2">
+                            </div>
+                            <label class="control-label" for="input-tag">Description</label>
+                            <div class="controls">
+                                <input class="input-mini span3" id="input-tag" name="desc" type="text" placeholder="document description">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div>
+                    <div >
+
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+                <button class="btn btn-primary" >Done</button>
+            </div>
+        </div>
         <!-- javascript
         ================================================== -->
         <!-- required js -->
@@ -220,10 +281,17 @@
         <script type="text/javascript" src="js/jquery-ui.min.js"></script>
         <script type="text/javascript" src="js/jquery.ui.touch-punch.min.js"></script>
         <script type="text/javascript" src="js/bootstrap.min.js"></script>
-        
+        <script type="text/javascript" src="js/dropzone/dropzone.js"></script>
         <script type="text/javascript" src="js/holder/holder.js"></script>
         <script type="text/javascript" src="js/metro-base.js"></script>
+    <script type="text/javascript" src="js/datatables/jquery.dataTables.min.js"></script>
     </body>
+        <script type="text/javascript">
 
-<!-- Mirrored from stilearning.com/items/preview/stilearn-metro/layout-full-width.html by HTTrack Website Copier/3.x [XR&CO'2013], Mon, 14 Oct 2013 07:44:58 GMT -->
+            $(function(){$("#datatables1").dataTable({bProcessing:!0,sAjaxSource:"../api/files",aoColumns:[{mData:"FileName"},{mData:"FileType"},{mData:"Tag"},{mData:"Description"},{mData:"DateTime"}]})});
+
+
+        </script>
 </html>
+
+

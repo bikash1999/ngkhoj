@@ -6,3 +6,29 @@
 .page-header{
 	display: inherit !important;
 }
+
+
+.dropzone .dz-default.dz-message {
+    opacity: 1;
+    -ms-filter: none;
+    filter: none;
+    -webkit-transition: opacity 0.3s ease-in-out;
+    -moz-transition: opacity 0.3s ease-in-out;
+    -o-transition: opacity 0.3s ease-in-out;
+    -ms-transition: opacity 0.3s ease-in-out;
+    transition: opacity 0.3s ease-in-out;
+    background-image: url("../img/spritemap.png");
+    background-repeat: no-repeat;
+    background-position: 0 0;
+    position: absolute;
+    width: 428px;
+    height: 123px;
+    margin-left: -214px;
+    margin-top: 0px;
+    top: 50%;
+    left: 50%;
+}
+
+.modal-body.uploadarea{
+             height: 300px;
+}

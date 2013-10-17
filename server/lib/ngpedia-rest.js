@@ -21,6 +21,8 @@ exports.listen = function(server){
 	});
     //authenticate user
 	me.server.post('/api/file/upload', function(req, res){
+        console.log(req.body);
+        console.log(req.files);
 		ngpediaApi.upload(req.files, req.body, function(err, data){
 			if (!err) {
 				res.json(data);
