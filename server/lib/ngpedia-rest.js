@@ -21,7 +21,7 @@ exports.listen = function(server){
 	});
     //authenticate user
 	me.server.post('/api/file/upload', function(req, res){
-		ngpediaApi.upload(req.body, function(err, data){
+		ngpediaApi.upload(req.files, req.body, function(err, data){
 			if (!err) {
 				res.json(data);
 			} else{
@@ -41,18 +41,6 @@ exports.listen = function(server){
             
         });
     });     
-
-    me.server.get('/api/file/:id', function(req, res){
-        ngpediaApi.getfile(req.body, function(err, data){
-            if (!err) {
-                res.json(data);
-            } else{
-                res.send(500, "ngpedia SERVER ERROR OCCURED: /api/getfile :\n" + err);
-            }
-            
-        });
-    });  
-
     me.server.get('/api/file/search', function(req, res){
         ngpediaApi.search(req.body, function(err, data){
             if (!err) {
