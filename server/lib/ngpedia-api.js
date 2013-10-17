@@ -70,22 +70,35 @@ exports.approve = function(json, callback) {
 	callback && callback(null, "file is here");
 }
 
-exports.search = function(json, callback) {
-	var searchResult = [{
-		"FileName": "File1",
-		"FileType": ".txt",
-		"Tag": "KBM Doc",
-		"Description": "KBM Template description",
-		"DateTime": "10/17-2013 03:18:00:00"
-	}, {
-		"FileName": "File2",
-		"FileType": ".txt",
-		"Tag": "EHR Doc",
-		"Description": "EHR Report description",
-		"DateTime": "10/17-2013 03:18:00:00"
-	}];
+exports.search = function(keyword, callback) {
 
-	callback && callback(null, searchResult);
+
+	searchFromSolr(keyword, function(err, res) {
+		var searchResult = [{
+			"FileName": "File1",
+			"FileType": ".txt",
+			"Tag": "KBM Doc",
+			"Description": "KBM Template description",
+			"DateTime": "10/17-2013 03:18:00:00"
+		}, {
+			"FileName": "File2",
+			"FileType": ".txt",
+			"Tag": "EHR Doc",
+			"Description": "EHR Report description",
+			"DateTime": "10/17-2013 03:18:00:00"
+		}];
+		callback && callback(null, searchResult);
+	});
+
+
+}
+
+function searchFromSolr(keyword, callback) {
+	var uri = 'http://qsih-00073.portal01.nextgen.com:8983/solr/collection1/select?q='+ keyword + '&df=attr_content&wt=json&indent=true';
+	restler.get(uri).on('complete', function(data) {
+		console.log(data);
+		callback && callback(null, data);
+	});
 }
 
 exports.getAllfiles = function(searchTerms, callback) {

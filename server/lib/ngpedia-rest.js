@@ -54,7 +54,8 @@ exports.listen = function(server) {
     });
 
     me.server.get('/api/file/search', function(req, res) {
-        ngpediaApi.search(req.body, function(err, data) {
+        console.log(req.query['keyword']);
+        ngpediaApi.search(req.query['keyword'], function(err, data) {
             if (!err) {
                 res.json(data);
             } else {

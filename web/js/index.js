@@ -11,7 +11,7 @@ function SearchViewModel() {
 			$.ajax({
 				type: 'GET',
 				dataType: "json",
-				url: '../api/file/search',
+				url: '../api/file/search?keyword=' + self.keyword(),
 				success: function(jsonData) {
 					self.searchResults(jsonData);
 				},
