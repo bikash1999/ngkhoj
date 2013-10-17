@@ -16,10 +16,10 @@ exports.heartbeat = function() {
 exports.upload = function(reqfile, data, uploadPath, callback) {
 	var fileInfo = {};
 	fileInfo.title = data.title;
+	fileInfo.tagsCsv = data.tags;
 	fileInfo.description = data.description;
 	fileInfo.filename = data.filename;
 	fileInfo.id = uuid.v4();
-
 
 	fs.readFile(reqfile.file.path, function(err, data) {
 		if (err) {
@@ -47,15 +47,12 @@ exports.upload = function(reqfile, data, uploadPath, callback) {
 
 			});
 
-
-
 		});
 	});
 }
 
 function postToSolr(fileInfo, filePath, callback) {
-	var uri = 'http://qsih-00073.portal01.nextgen.com:8983/solr/update/extract?literal.id=' + fileInfo.id + '&captureAttr=true&defaultField=text&fmap.div=foo_t&capture=div&literal.category=Tag1';
-
+	var uri = 'http://qsih-00073.portal01.nextgen.com:8983/solr/update/extract?literal.id=' + fileInfo.id + '&captureAttr=true&defaultField=text&fmap.div=foo_t&capture=div&literal.category=' + fileInfo.tagsCsv + '&literal.title=' + fileInfo.title + '&literal.description=' + fileInfo.description;
 	fs.stat(filePath, function(err, stats) {
 		restler.post(uri, {
 			multipart: true,

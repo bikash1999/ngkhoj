@@ -175,9 +175,9 @@
                                 <div class="control-group">
                                     <div class="controls">
                                         <div style="display: block;" class="input-append input-append-inline">
-                                            <input type="text" placeholder="Search..." name="inputSearch" class="input-block-level">
-                                            <button type="submit" class="btn bg-cyan">
-                                                <i class="aweso-search"></i>
+                                            <input type="text" placeholder="Search..." name="inputSearch"  class="input-block-level" data-bind="value: keyword" >
+                                            <button type="submit" class="btn bg-cyan" data-bind="click: $root.doSearch">
+                                                <i class="aweso-search" type="submit" ></i>
                                             </button>
                                         </div>
                                     </div>
@@ -187,30 +187,21 @@
                     </div>
                 </header> <!--/ content header -->
                 
-                
                 <!-- content page -->
                 <article class="content-page">
                     <!-- main page, you're application here -->
                     <div class="main-page">
                         <div class="content-inner">
-
-                            <ul class="media-list search-result">
+                            <h4 data-bind="visible: keyword">search result for keyword: "<strong><span data-bind="text: keyword"> </span></strong>"</h4>                           
+                            <ul class="media-list search-result" data-bind="foreach: searchResults">
                                 <li class="media bg-silver">
                                     <div class="media-body">
                                         <a href="#">
-                                            <h4 class="media-heading">File 1</h4>
+                                            <h4 class="media-heading" data-bind="text: FileName">File 1</h4>
                                         </a>
-                                        <p>KBM Doc, KBM Template Description</p>
+                                        <p data-bind="text: Description">KBM Doc, KBM Template Description</p>
                                     </div>
-                                </li>
-                                <li class="media bg-silver">
-                                    <div class="media-body">
-                                        <a href="#">
-                                            <h4 class="media-heading">File 2</h4>
-                                        </a>
-                                        <p>EHR Document, EHR Report Description</p>
-                                    </div>
-                                </li>
+                                </li>                               
                             </ul>
                         </div>
                     </div>
@@ -225,8 +216,6 @@
         </footer><!--/ footer -->
         
         
-        
-        
         <!-- javascript
         ================================================== -->
         <!-- required js -->
@@ -234,9 +223,10 @@
         <script type="text/javascript" src="js/jquery-ui.min.js"></script>
         <script type="text/javascript" src="js/jquery.ui.touch-punch.min.js"></script>
         <script type="text/javascript" src="js/bootstrap.min.js"></script>
-        
+        <script type="text/javascript" src="js/ko/knockout-2.2.0.js"></script>
         <script type="text/javascript" src="js/holder/holder.js"></script>
         <script type="text/javascript" src="js/metro-base.js"></script>
+        <script type="text/javascript" src="js/index.js"></script>
     </body>
 
 <!-- Mirrored from stilearning.com/items/preview/stilearn-metro/layout-full-width.html by HTTrack Website Copier/3.x [XR&CO'2013], Mon, 14 Oct 2013 07:44:58 GMT -->
