@@ -13,7 +13,8 @@ var config = {
 		username: '',
 		password: ''
 	},
-	webroot: __dirname + '/..'
+	webroot: __dirname + '/..',
+	uploadPath:  __dirname + '/../web/uploads/'
 };
 
 var port = process.env.PORT || 3000;
