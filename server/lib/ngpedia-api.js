@@ -2,7 +2,7 @@ var db = require('./ngpedia-db');
 var randomstring = require("randomstring");
 var uuid = require('uuid');
 var fs = require('fs');
-var request = require('request');
+var restler = require('restler');
 
 var randomToken = function() {
 	return randomstring.generate(7);
@@ -54,13 +54,19 @@ exports.upload = function(reqfile, data, uploadPath, callback) {
 }
 
 function postToSolr(fileInfo, filePath, callback) {
-	var r = request.post('http://qsih-00073.portal01.nextgen.com/:8983/solr/update/extract?literal.id=<UniqueID>&captureAttr=true&defaultField=text&fmap.div=foo_t&capture=div&literal.category=<Tag1,Tag2>');
+	var uri = 'http://qsih-00073.portal01.nextgen.com:8983/solr/update/extract?literal.id=' + fileInfo.id + '&captureAttr=true&defaultField=text&fmap.div=foo_t&capture=div&literal.category=Tag1';
 
-	var form = r.form();
-	form.append('myfile', fs.createReadStream(filePath));
-
-	callback && callback(err, null);
-
+	fs.stat(filePath, function(err, stats) {
+		restler.post(uri, {
+			multipart: true,
+			data: {
+				"myfile": restler.file(filePath, null, stats.size, null, stats.type)
+			}
+		}).on("complete", function(data) {
+			console.log(data);
+			callback && callback(null, data);
+		});
+	});
 }
 
 exports.approve = function(json, callback) {
