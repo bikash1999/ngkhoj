@@ -213,8 +213,7 @@
                                 <table id="datatables1" class="table table-striped table-hover">
                                     <thead>
                                     <tr>
-                                        <th>Filename</th>
-                                        <th>type</th>
+                                        <th>Filename</th>                       
                                         <th>Title</th>
                                         <th>Description</th>
                                         <th>Date time</th>
@@ -254,11 +253,11 @@
                             </div>
                             <label class="control-label" for="input-desc">Tag</label>
                             <div class="controls">
-                                <input class="input-mini span3" id="input-desc" name="tag" type="text" placeholder="tag1, tag2">
+                                <input class="input-mini span3" id="input-desc" name="tags" type="text" placeholder="tag1, tag2">
                             </div>
                             <label class="control-label" for="input-tag">Description</label>
                             <div class="controls">
-                                <input class="input-mini span3" id="input-tag" name="desc" type="text" placeholder="document description">
+                                <input class="input-mini span3" id="input-tag" name="description" type="text" placeholder="document description">
                             </div>
                         </div>
                     </form>
@@ -288,8 +287,8 @@
     </body>
         <script type="text/javascript">
 
-            $(function(){$("#datatables1").dataTable({bProcessing:!0,sAjaxSource:"../api/files",aoColumns:[{mData:"FileName"},{mData:"FileType"},{mData:"Tag"},{mData:"Description"},{mData:"DateTime"}]})});
-
+        $(function(){$("#datatables1").dataTable({bProcessing:!0,sAjaxSource:"../api/files",aoColumns:[{mData:"title"},{mData:"title"},{mData:"description"},{mData:"uploadedDate"}]})
+    });
 
         </script>
 </html>
