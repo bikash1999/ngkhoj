@@ -41,6 +41,18 @@ exports.listen = function(server){
             
         });
     });     
+
+    me.server.get('/api/files', function(req, res){
+        ngpediaApi.getAllfiles(req.body, function(err, data){
+            if (!err) {
+                res.json(data);
+            } else{
+                res.send(500, "ngpedia SERVER ERROR OCCURED: /api/getfile :\n" + err);
+            }
+            
+        });
+    });  
+
     me.server.get('/api/file/search', function(req, res){
         ngpediaApi.search(req.body, function(err, data){
             if (!err) {
