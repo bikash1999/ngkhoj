@@ -45,3 +45,14 @@ function SearchViewModel() {
 var vm = new SearchViewModel();
 ko.applyBindings(vm);
 vm.getNotification();
+
+
+$('.example-films .typeahead').typeahead([
+  {
+    name: 'ngpedia search',
+    remote: '../data/films/queries/%QUERY.json',
+    prefetch: '../data/films/post_1960.json',
+    template: '<p><strong>{{value}}</strong> – {{year}}</p>',
+    engine: Hogan
+  }
+]);

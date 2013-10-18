@@ -83,7 +83,7 @@ function postToSolr(fileInfo, filePath, callback) {
 }
 
 function searchFromSolr(keyword, callback) {
-	var uri = 'http://qsih-00073.portal01.nextgen.com:8983/solr/collection1/select?q=' + keyword + '&wt=json&indent=true';
+	var uri = 'http://qsih-00073.portal01.nextgen.com:8983/solr/collection1/select?q=' + keyword + '&wt=json&indent=true&q.op=AND';
 	restler.get(uri).on('complete', function(data) {
 		callback && callback(null, data);
 	});
