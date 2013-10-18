@@ -241,7 +241,7 @@
                 <div id="dropzone">
                     <form action="../api/file/upload"
                           class="dropzone form-horizontal"
-                          id="my-awesome-dropzone" enctype=multipart/form-data>
+                          id="my-awesome-dropzone" enctype="multipart/form-data">
                        
                         <div class="control-group">
                             <label class="control-label" for="input-title">Title</label>
@@ -281,15 +281,13 @@
     <script type="text/javascript" src="js/datatables/jquery.dataTables.min.js"></script>
     </body>
     <script type="text/javascript">
-    Dropzone.options.dropzoneForm = {
-            init: function () {
-                this.on("complete", function (data) {                
-                var res = eval('(' + data.xhr.responseText + ')');
-                alert(res.Message);
-            });
-        }
-    };
+    $(document).ready(function () {
 
+    $('#uploadModal').on('hidden', function () {
+        console.log('hidden');
+        refreshTable("#datatables1","../api/files" );
+        });
+    });
    
 
     $(function(){$("#datatables1").dataTable({bProcessing:!0,sAjaxSource:"../api/files",aoColumns:[{mData:"title"},{mData:"title"},{mData:"description"},{mData:"uploadedDate"}]})

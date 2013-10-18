@@ -54,7 +54,7 @@ exports.upload = function(reqfile, data, uploadPath, callback) {
 }
 
 function postToSolr(fileInfo, filePath, callback) {
-	var uri = 'http://qsih-00121.portal01.nextgen.com:8983/solr/update/extract?literal.id=' + fileInfo.id + '&captureAttr=true&defaultField=text&fmap.div=foo_t&capture=div&commit=true&literal.category=' + fileInfo.tagsCsv + '&literal.title=' + fileInfo.title + '&literal.description=' + fileInfo.description;
+	var uri = 'http://qsih-00073.portal01.nextgen.com:8983/solr/update/extract?literal.id=' + fileInfo.id + '&captureAttr=true&defaultField=text&fmap.div=foo_t&capture=div&commit=true&literal.category=' + fileInfo.tagsCsv + '&literal.title=' + fileInfo.title + '&literal.description=' + fileInfo.description;
 	fs.stat(filePath, function(err, stats) {
 		restler.post(uri, {
 			multipart: true,
@@ -65,6 +65,15 @@ function postToSolr(fileInfo, filePath, callback) {
 			console.log(data);
 			callback && callback(null, data);
 		});
+	});
+}
+
+
+function searchFromSolr(keyword, callback) {
+	var uri = 'http://qsih-00073.portal01.nextgen.com:8983/solr/collection1/select?q=' + keyword + '&wt=json&indent=true';
+	restler.get(uri).on('complete', function(data) {
+		console.log(data);
+		callback && callback(null, data);
 	});
 }
 
@@ -90,16 +99,6 @@ exports.search = function(keyword, callback) {
 			"DateTime": "10/17-2013 03:18:00:00"
 		}];
 		callback && callback(null, searchResult);
-	});
-
-
-}
-
-function searchFromSolr(keyword, callback) {
-	var uri = 'http://qsih-00121.portal01.nextgen.com:8983/solr/collection1/select?q=' + keyword + '&df=attr_content&wt=json&indent=true';
-	restler.get(uri).on('complete', function(data) {
-		console.log(data);
-		callback && callback(null, data);
 	});
 }
 
