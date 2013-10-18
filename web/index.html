@@ -197,10 +197,11 @@
                             <ul class="media-list search-result" data-bind="foreach: searchResults">
                                 <li class="media bg-silver">
                                     <div class="media-body">
-                                        <a href="#">
+                                        <a data-bind="attr: { href: url }">
                                             <h4 class="media-heading" data-bind="text: description"></h4>
                                         </a>
                                         <p data-bind="text: description"></p>
+                                        <p>author: <span data-bind="text: author"></span></p>
                                         <p data-bind="text: dateTime"></p>
                                     </div>
                                 </li>                               

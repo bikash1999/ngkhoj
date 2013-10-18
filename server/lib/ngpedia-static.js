@@ -23,14 +23,14 @@ exports.listen = function(server){
 		}
 	});
 
-    server.get('/web/login.html', function(req, res, next){
+    server.get('/web/Index.html', function(req, res, next){
         count += 1;
-        console.log(req);
+        //console.log(req);
         next();
     });
 	server.get(/^\/web\//, function(req, res, next){        
 		req.on('end', function(){
-			console.log('request url: ' + req.url);
+			//console.log('request url: ' + req.url);
 			file.serve(req, res, function(err, result){
 				if (err) {
 					res.writeHead(err.status, err.headers);

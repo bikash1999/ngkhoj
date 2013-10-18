@@ -16,25 +16,34 @@ exports.heartbeat = function() {
 }
 exports.upload = function(reqfile, data, uploadPath, callback) {
 	var fileInfo = {};
-	fileInfo.title = data.title;
-	fileInfo.tagsCsv = data.tags;
-	fileInfo.description = data.description;
-	fileInfo.filename = data.filename;
+
+	var filenameWithOutExtension = reqfile.file.name.substr(0, reqfile.file.name.lastIndexOf('.')) || reqfile.file.name;
+	var extn = getExtension(reqfile.file.name);
+
 	fileInfo.id = uuid.v4();
+	fileInfo.title = data.title ? data.title : filenameWithOutExtension;
+	fileInfo.tagsCsv = data.tags;
+	fileInfo.description = data.description ? data.description : filenameWithOutExtension;;
+	fileInfo.filename = reqfile.file.name;
+	fileInfo.fileExtension = extn;
+	fileInfo.type = reqfile.file.type;
+	fileInfo.size = reqfile.file.size;
+
+	console.log("File information to be uploaded:\n" + fileInfo);
+
 
 	fs.readFile(reqfile.file.path, function(err, data) {
 		if (err) {
 			callback && callback(err, null);
 			return;
 		}
-		var newPath = uploadPath + fileInfo.id + ".docx";
+		var newPath = uploadPath + fileInfo.id + fileInfo.fileExtension;
 
 		fs.writeFile(newPath, data, function(err) {
 			if (err) {
 				callback && callback(err, null);
 				return;
 			}
-
 			postToSolr(fileInfo, newPath, function(err, res) {
 
 				if (err) {
@@ -53,8 +62,13 @@ exports.upload = function(reqfile, data, uploadPath, callback) {
 	});
 }
 
+function getExtension(filename) {
+	var i = filename.lastIndexOf('.');
+	return (i < 0) ? '' : filename.substr(i);
+}
+
 function postToSolr(fileInfo, filePath, callback) {
-	var uri = 'http://qsih-00073.portal01.nextgen.com:8983/solr/update/extract?literal.id=' + fileInfo.id + '&captureAttr=true&defaultField=text&fmap.div=foo_t&capture=div&commit=true&literal.category=' + fileInfo.tagsCsv + '&literal.title=' + fileInfo.title + '&literal.description=' + fileInfo.description;
+	var uri = 'http://qsih-00073.portal01.nextgen.com:8983/solr/update/extract?literal.id=' + fileInfo.id + '&captureAttr=true&defaultField=text&fmap.div=foo_t&capture=div&commit=true&literal.category=' + fileInfo.tagsCsv + '&literal.title=' + fileInfo.title + '&literal.description=' + fileInfo.description + '&literal.file_extension=' + fileInfo.fileExtension;
 	fs.stat(filePath, function(err, stats) {
 		restler.post(uri, {
 			multipart: true,
@@ -62,7 +76,7 @@ function postToSolr(fileInfo, filePath, callback) {
 				"myfile": restler.file(filePath, null, stats.size, null, stats.type)
 			}
 		}).on("complete", function(data) {
-			console.log(data);
+			console.log("Solr POST done\n" + data);
 			callback && callback(null, data);
 		});
 	});
@@ -82,12 +96,16 @@ exports.approve = function(json, callback) {
 exports.search = function(keyword, callback) {
 
 	var searchResult = [];
+	console.log('searching keyword:\n' + keyword);
 	searchFromSolr(keyword, function(err, data) {
 		var json = JSON.parse(data);
-		var docs = json.response.docs;
-		makeSearchResult(docs.slice(), searchResult, function() {
-			callback && callback(null, searchResult);
-		});
+		if (json.response.docs) {
+			var docs = json.response.docs;
+			makeSearchResult(docs.slice(), searchResult, function() {
+				console.log('keyword searched:"%s" result found: "%s"' + searchResult.length, keyword);
+				callback && callback(null, searchResult);
+			});
+		};
 	});
 }
 
@@ -96,8 +114,8 @@ function makeSearchResult(docs, results, cb) {
 	if (doc) {
 		var result = {
 			"id": doc.id,
-			"url": "test",
-			"extension": "",
+			"url": "uploads/" + doc.id + "" + doc.file_extension,
+			"extension": doc.file_extension,
 			"description": doc.description ? doc.description : "",
 			"content_type": doc.content_type[0],
 			"dateTime": doc.last_modified,

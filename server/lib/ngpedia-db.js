@@ -11,7 +11,10 @@ var defineMongooseSchema = function() {
             title: String,
             description: String,
             filename: String,
+            fileExtension: String,
+            type: String,
             tags: [String],
+            size: String,
             isApproved: {
                 type: Boolean,
                 default: false
