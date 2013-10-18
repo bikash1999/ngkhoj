@@ -1,4 +1,5 @@
 var db = require('./ngpedia-db');
+var ngSocket = require('./ngpedia-socket');
 var randomstring = require("randomstring");
 var uuid = require('uuid');
 var fs = require('fs');
@@ -42,6 +43,7 @@ exports.upload = function(reqfile, data, uploadPath, callback) {
 				}
 
 				db.insertFile(fileInfo, function(err, res) {
+					ngSocket.sendNotificationForApproval("1", res);
 					callback && callback(err, res);
 				});
 
@@ -52,7 +54,7 @@ exports.upload = function(reqfile, data, uploadPath, callback) {
 }
 
 function postToSolr(fileInfo, filePath, callback) {
-	var uri = 'http://qsih-00073.portal01.nextgen.com:8983/solr/update/extract?literal.id=' + fileInfo.id + '&captureAttr=true&defaultField=text&fmap.div=foo_t&capture=div&literal.category=' + fileInfo.tagsCsv + '&literal.title=' + fileInfo.title + '&literal.description=' + fileInfo.description;
+	var uri = 'http://qsih-00121.portal01.nextgen.com:8983/solr/update/extract?literal.id=' + fileInfo.id + '&captureAttr=true&defaultField=text&fmap.div=foo_t&capture=div&literal.category=' + fileInfo.tagsCsv + '&literal.title=' + fileInfo.title + '&literal.description=' + fileInfo.description;
 	fs.stat(filePath, function(err, stats) {
 		restler.post(uri, {
 			multipart: true,
@@ -94,7 +96,7 @@ exports.search = function(keyword, callback) {
 }
 
 function searchFromSolr(keyword, callback) {
-	var uri = 'http://qsih-00073.portal01.nextgen.com:8983/solr/collection1/select?q='+ keyword + '&df=attr_content&wt=json&indent=true';
+	var uri = 'http://qsih-00121.portal01.nextgen.com:8983/solr/collection1/select?q=' + keyword + '&df=attr_content&wt=json&indent=true';
 	restler.get(uri).on('complete', function(data) {
 		console.log(data);
 		callback && callback(null, data);

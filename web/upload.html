@@ -59,9 +59,8 @@
                         <!-- Un-collapse nav -->
                         <div class="nav-uncollapse">
                             <ul class="nav pull-left hidden-phone">
-                                <li>
-                                    <input type="file" name="upload-files" class="hide">
-                                    <a data-target="upload-files" data-toggle="upload" href="index.html"><i class="aweso-upload aweso-large"></i> &nbsp;Search</a>
+                                <li>                                    
+                                    <a data-target="upload-files" data-toggle="upload" href="index.html"><i class="aweso-search aweso-large"></i> &nbsp;Search</a>
                                 </li>
                             </ul>
                             <!-- pull right menu-->
@@ -243,9 +242,7 @@
                     <form action="../api/file/upload"
                           class="dropzone form-horizontal"
                           id="my-awesome-dropzone" enctype=multipart/form-data>
-                        <div class="fallback">
-                            <input name="file" type="file"/>
-                        </div>
+                       
                         <div class="control-group">
                             <label class="control-label" for="input-title">Title</label>
                             <div class="controls">
@@ -260,13 +257,11 @@
                                 <input class="input-mini span3" id="input-tag" name="description" type="text" placeholder="document description">
                             </div>
                         </div>
+                         <div class="fallback">
+                            <input name="file" type="file"/>
+                        </div>
                     </form>
-                </div>
-                <div>
-                    <div >
-
-                    </div>
-                </div>
+                </div>                
             </div>
             <div class="modal-footer">
                 <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
@@ -285,12 +280,44 @@
         <script type="text/javascript" src="js/metro-base.js"></script>
     <script type="text/javascript" src="js/datatables/jquery.dataTables.min.js"></script>
     </body>
-        <script type="text/javascript">
+    <script type="text/javascript">
 
-        $(function(){$("#datatables1").dataTable({bProcessing:!0,sAjaxSource:"../api/files",aoColumns:[{mData:"title"},{mData:"title"},{mData:"description"},{mData:"uploadedDate"}]})
+    Dropzone.options.filedrop = {
+      init: function () {
+        this.on("complete", function (file) {
+        console.log('upoad done now refresh');
+          if (this.getUploadingFiles().length === 0 && this.getQueuedFiles().length === 0) {
+            console.log('upoad done now refresh');
+            refreshTable("#datatables1","../api/files");
+          }
+        });
+      }
+    };
+
+    $(function(){$("#datatables1").dataTable({bProcessing:!0,sAjaxSource:"../api/files",aoColumns:[{mData:"title"},{mData:"title"},{mData:"description"},{mData:"uploadedDate"}]})
     });
 
-        </script>
+    function refreshTable(tableId, urlData)
+    {
+      //Retrieve the new data with $.getJSON. You could use it ajax too
+      $.getJSON(urlData, null, function( json )
+      {
+        table = $(tableId).dataTable();
+        oSettings = table.fnSettings();
+
+        table.fnClearTable(this);
+
+        for (var i=0; i<json.aaData.length; i++)
+        {
+          table.oApi._fnAddData(oSettings, json.aaData[i]);
+        }
+
+        oSettings.aiDisplay = oSettings.aiDisplayMaster.slice();
+        table.fnDraw();
+      });
+    }
+
+    </script>
 </html>
 
 

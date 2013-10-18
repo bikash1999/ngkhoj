@@ -4,36 +4,28 @@ var sio = null,
 
 var me = this;
 
-exports.init = function(config, callback){
+exports.init = function(config, callback) {
 	console.log('ngpedia-socket init()');
 	me.config = config;
 	callback && callback();
 };
 
-var generateReservationLink = function(socket, restaurentId) {
-	var link = ngpediaApi.generateLink(restaurentId);
-	console.log('emitting an event');
-	socket.emit(restaurentId, link);
-};
 
-exports.listen = function(sio){
+exports.sendNotificationForApproval = function(userId, data) {
+	var context = taskData.userRole;
+	console.log('emitting an event');
+	me.sio.sockets. in (context).emit(userId, data);
+}
+
+exports.listen = function(sio) {
 	console.log('ngpedia-socket listen()');
 	me.sio = sio;
 
 	me.sio.sockets.on('connection', function(socket) {
-		console.log('wait for client request for url.');
-
-		//Subscription for new url request
-		socket.on("subscribe-new-url", function(id) {
-			console.log('found id for request: ' + id);
-			var timerInterval = setInterval(function() {
-				generateReservationLink(socket, id);
-			}, 9000);
-
-			socket.on('disconnect', function() {
-				clearInterval(timerInterval);
-				console.log('Timer is stopped for id: ' + id);
-			});
+		console.log('waiting for client for approval request');
+		// once a client has connected, we expect to get a ping from them saying what room they want to join
+		socket.on('subscribe-new-notification', function(context) {
+			socket.join(context.userId);
 		});
 	});
 };
