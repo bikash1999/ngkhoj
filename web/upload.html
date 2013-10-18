@@ -281,18 +281,16 @@
     <script type="text/javascript" src="js/datatables/jquery.dataTables.min.js"></script>
     </body>
     <script type="text/javascript">
-
-    Dropzone.options.filedrop = {
-      init: function () {
-        this.on("complete", function (file) {
-        console.log('upoad done now refresh');
-          if (this.getUploadingFiles().length === 0 && this.getQueuedFiles().length === 0) {
-            console.log('upoad done now refresh');
-            refreshTable("#datatables1","../api/files");
-          }
-        });
-      }
+    Dropzone.options.dropzoneForm = {
+            init: function () {
+                this.on("complete", function (data) {                
+                var res = eval('(' + data.xhr.responseText + ')');
+                alert(res.Message);
+            });
+        }
     };
+
+   
 
     $(function(){$("#datatables1").dataTable({bProcessing:!0,sAjaxSource:"../api/files",aoColumns:[{mData:"title"},{mData:"title"},{mData:"description"},{mData:"uploadedDate"}]})
     });

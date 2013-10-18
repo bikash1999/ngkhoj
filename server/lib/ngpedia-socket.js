@@ -12,7 +12,7 @@ exports.init = function(config, callback) {
 
 
 exports.sendNotificationForApproval = function(userId, data) {
-	var context = taskData.userRole;
+	var context = userId;
 	console.log('emitting an event');
 	me.sio.sockets. in (context).emit(userId, data);
 }

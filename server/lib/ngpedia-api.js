@@ -43,7 +43,7 @@ exports.upload = function(reqfile, data, uploadPath, callback) {
 				}
 
 				db.insertFile(fileInfo, function(err, res) {
-					ngSocket.sendNotificationForApproval("1", res);
+					//ngSocket.sendNotificationForApproval("1", res);
 					callback && callback(err, res);
 				});
 
@@ -54,7 +54,7 @@ exports.upload = function(reqfile, data, uploadPath, callback) {
 }
 
 function postToSolr(fileInfo, filePath, callback) {
-	var uri = 'http://qsih-00121.portal01.nextgen.com:8983/solr/update/extract?literal.id=' + fileInfo.id + '&captureAttr=true&defaultField=text&fmap.div=foo_t&capture=div&literal.category=' + fileInfo.tagsCsv + '&literal.title=' + fileInfo.title + '&literal.description=' + fileInfo.description;
+	var uri = 'http://qsih-00121.portal01.nextgen.com:8983/solr/update/extract?literal.id=' + fileInfo.id + '&captureAttr=true&defaultField=text&fmap.div=foo_t&capture=div&commit=true&literal.category=' + fileInfo.tagsCsv + '&literal.title=' + fileInfo.title + '&literal.description=' + fileInfo.description;
 	fs.stat(filePath, function(err, stats) {
 		restler.post(uri, {
 			multipart: true,
