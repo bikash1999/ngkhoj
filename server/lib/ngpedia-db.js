@@ -61,20 +61,32 @@ exports.insertFile = function(file, callback) {
     });
 };
 
-exports.getAllFiles = function(searchTerms, errorCallback, sendCallback, closeCallback) {
-   var stream = NGpediaModel.find(searchTerms, {
-        '_id': 0
-    }).stream();
-    stream.on('data', function(file) {
-        // do something with the mongoose document
-        sendCallback(file);
-    }).on('error', function(err) {
-        // handle the error
-        errorCallback(err);
-    }).on('close', function() {
-        // the stream is closed
-        closeCallback();
-    });
+exports.getAllFiles = function(query, callback) {
+
+    var property, pageCount = 0,
+        pageNumber = 0,
+        realQuery = {}, includes = {};
+
+    for (property in query) {
+        switch (property) {
+            case 'PageCount':
+                pageCount = query[property] || 100;
+                break;
+            case 'PageNumber':
+                pageNumber = query[property] || 1;
+                break;
+        }
+    }
+
+    var skipRecords = pageCount * (pageNumber - 1);
+
+    NGpediaModel.find(realQuery, includes, {
+        skip: ((skipRecords === -1) ? 0 : skipRecords),
+        limit: pageCount,
+        sort: {
+            'uploadedDate': -1
+        }
+    }, callback);
 }
 
 //internal method

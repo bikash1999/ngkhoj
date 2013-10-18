@@ -131,14 +131,10 @@ function makeSearchResult(docs, results, cb) {
 exports.getAllfiles = function(searchTerms, callback) {
 	var searchResult;
 	var results = [];
-	db.getAllFiles(searchTerms,
-		function(err) { // error
-			callback && callback(err, searchResult);
-		},
-		function(matchingDocument) { // stream the results
-			results.push(matchingDocument);
-		},
-		function() { // on close or end of results
+
+
+	db.getAllFiles(searchTerms,		
+		function(err, results) { // on close or end of results
 			searchResult = {};
 			searchResult.aaData = results;
 			callback && callback(null, searchResult);

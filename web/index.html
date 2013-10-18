@@ -66,11 +66,10 @@
                                 <!-- notification -->
                                 <li class="dropdown">
                                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                        <div class="label">3</div>
+                                        <div class="label" data-bind="visible:notifications(), text: notifications().length">3</div>
                                         <i class="aweso-bell-alt"></i>
                                     </a>
-                                    <ul class="dropdown-menu dropdown-extend" role="menu" aria-labelledby="dropdownMenu">
-                                        <li class="dropdown-header">You have 4 new notofications</li>
+                                    <ul class="dropdown-menu dropdown-extend" role="menu" aria-labelledby="dropdownMenu" data-bind="foreach: notifications">              
                                         <li>
                                             <a tabindex="-1" href="#">
                                                 <div class="media">
@@ -79,49 +78,14 @@
                                                     </div>
                                                     <div class="media-body">
                                                         <h4 class="media-heading"><small class="pull-right">Just Now</small> Waiting Approval</h4>
-                                                        <p>Document name</p>
-                                                        <p>DateTime</p>
+                                                        <p data-bind="text: filename"></p>
+                                                        <p data-bind="text: uploadedDate">DateTime</p>
                                                         <button class="btn btn-small bg-green">Approve</button>
                                                         <button class="btn btn-small bg-red">Reject</button>
                                                     </div>
                                                 </div>
                                             </a>
-                                        </li>
-                                        <li>
-                                            <a tabindex="-1" href="#">
-                                                <div class="media">
-                                                    <div class="pull-left">
-                                                        <img class="media-object" data-src="holder.js/32x32">
-                                                    </div>
-                                                      <div class="media-body">
-                                                        <h4 class="media-heading"><small class="pull-right">Just Now</small> Waiting Approval</h4>
-                                                        <p>Document name</p>
-                                                        <p>DateTime</p>
-                                                        <button class="btn btn-small bg-green">Approve</button>
-                                                        <button class="btn btn-small bg-red">Reject</button>
-                                                    </div>
-                                                </div>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a tabindex="-1" href="#">
-                                                <div class="media">
-                                                    <div class="pull-left">
-                                                        <img class="media-object" data-src="holder.js/32x32">
-                                                    </div>
-                                                     <div class="media-body">
-                                                        <h4 class="media-heading"><small class="pull-right">Just Now</small> Waiting Approval</h4>
-                                                        <p>Document name</p>
-                                                        <p>DateTime</p>
-                                                        <button class="btn btn-small bg-green">Approve</button>
-                                                        <button class="btn btn-small bg-red">Reject</button>
-                                                    </div>
-                                                </div>
-                                            </a>
-                                        </li>
-                                        <li class="dropdown-footer">
-                                            <a tabindex="-1" href="#"><i class="aweso-angle-right pull-right"></i> See all notifications</a>
-                                        </li>
+                                        </li>    
                                     </ul>
                                 </li><!-- /notification -->
                                 

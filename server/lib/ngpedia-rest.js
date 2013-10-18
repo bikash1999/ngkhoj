@@ -43,7 +43,7 @@ exports.listen = function(server) {
     });
 
     me.server.get('/api/files', function(req, res) {
-        ngpediaApi.getAllfiles(req.body, function(err, data) {
+        ngpediaApi.getAllfiles(req.query, function(err, data) {
             if (!err) {
                 res.json(data);
             } else {
