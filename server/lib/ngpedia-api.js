@@ -68,11 +68,9 @@ function postToSolr(fileInfo, filePath, callback) {
 	});
 }
 
-
 function searchFromSolr(keyword, callback) {
 	var uri = 'http://qsih-00073.portal01.nextgen.com:8983/solr/collection1/select?q=' + keyword + '&wt=json&indent=true';
 	restler.get(uri).on('complete', function(data) {
-		console.log(data);
 		callback && callback(null, data);
 	});
 }
@@ -83,23 +81,33 @@ exports.approve = function(json, callback) {
 
 exports.search = function(keyword, callback) {
 
-
-	searchFromSolr(keyword, function(err, res) {
-		var searchResult = [{
-			"FileName": "File1",
-			"FileType": ".txt",
-			"Tag": "KBM Doc",
-			"Description": "KBM Template description",
-			"DateTime": "10/17-2013 03:18:00:00"
-		}, {
-			"FileName": "File2",
-			"FileType": ".txt",
-			"Tag": "EHR Doc",
-			"Description": "EHR Report description",
-			"DateTime": "10/17-2013 03:18:00:00"
-		}];
-		callback && callback(null, searchResult);
+	var searchResult = [];
+	searchFromSolr(keyword, function(err, data) {
+		var json = JSON.parse(data);
+		var docs = json.response.docs;
+		makeSearchResult(docs.slice(), searchResult, function() {
+			callback && callback(null, searchResult);
+		});
 	});
+}
+
+function makeSearchResult(docs, results, cb) {
+	var doc = docs.pop();
+	if (doc) {
+		var result = {
+			"id": doc.id,
+			"url": "test",
+			"extension": "",
+			"description": doc.description ? doc.description : "",
+			"content_type": doc.content_type[0],
+			"dateTime": doc.last_modified,
+			"author": doc.author
+		};
+		results.push(result);
+		makeSearchResult(docs, results, cb);
+	} else {
+		cb && cb();
+	};
 }
 
 exports.getAllfiles = function(searchTerms, callback) {

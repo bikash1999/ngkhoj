@@ -14,6 +14,7 @@ function SearchViewModel() {
 				url: '../api/file/search?keyword=' + self.keyword(),
 				success: function(jsonData) {
 					self.searchResults(jsonData);
+					console.log(self.searchResults());
 				},
 				error: function(xhr, desc, err) {
 					console.log('Error on GET EvoApi Components' + err);

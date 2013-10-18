@@ -192,14 +192,16 @@
                     <!-- main page, you're application here -->
                     <div class="main-page">
                         <div class="content-inner">
-                            <h4 data-bind="visible: keyword">search result for keyword: "<strong><span data-bind="text: keyword"> </span></strong>"</h4>                           
+                            <h4 data-bind="visible: keyword">search result for keyword: "<strong><span data-bind="text: keyword"> </span></strong>" found: <strong><span data-bind="text: searchResults().length"> </span></strong></h4>   
+
                             <ul class="media-list search-result" data-bind="foreach: searchResults">
                                 <li class="media bg-silver">
                                     <div class="media-body">
                                         <a href="#">
-                                            <h4 class="media-heading" data-bind="text: FileName">File 1</h4>
+                                            <h4 class="media-heading" data-bind="text: description"></h4>
                                         </a>
-                                        <p data-bind="text: Description">KBM Doc, KBM Template Description</p>
+                                        <p data-bind="text: description"></p>
+                                        <p data-bind="text: dateTime"></p>
                                     </div>
                                 </li>                               
                             </ul>
