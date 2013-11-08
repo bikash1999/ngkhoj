@@ -68,7 +68,7 @@ function getExtension(filename) {
 }
 
 function postToSolr(fileInfo, filePath, callback) {
-	var uri = 'http://qsih-00073.portal01.nextgen.com:8983/solr/update/extract?literal.id=' + fileInfo.id + '&captureAttr=true&defaultField=text&fmap.div=foo_t&capture=div&commit=true&literal.category=' + fileInfo.tagsCsv + '&literal.title=' + fileInfo.title + '&literal.description=' + fileInfo.description + '&literal.file_extension=' + fileInfo.fileExtension;
+	var uri = 'http://localhost:8983/solr/update/extract?literal.id=' + fileInfo.id + '&captureAttr=true&defaultField=text&fmap.div=foo_t&capture=div&commit=true&literal.category=' + fileInfo.tagsCsv + '&literal.title=' + fileInfo.title + '&literal.description=' + fileInfo.description + '&literal.file_extension=' + fileInfo.fileExtension;
 	fs.stat(filePath, function(err, stats) {
 		restler.post(uri, {
 			multipart: true,
@@ -83,7 +83,7 @@ function postToSolr(fileInfo, filePath, callback) {
 }
 
 function searchFromSolr(keyword, callback) {
-	var uri = 'http://qsih-00073.portal01.nextgen.com:8983/solr/collection1/select?q=' + keyword + '&wt=json&indent=true&q.op=AND';
+	var uri = 'http://localhost:8983/solr/collection1/select?q=' + keyword + '&wt=json&indent=true&q.op=AND';
 	restler.get(uri).on('complete', function(data) {
 		callback && callback(null, data);
 	});
